@@ -11,11 +11,23 @@ class V1::ImagesController < ApplicationController
   end
 
   def show
-    # TODO: docker image inspect
+    begin
+      image = Docker::Image.get(params[:id])
+      render json: { status: { code: 200 }, data: image }
+    rescue 
+      render json: { status: { code: 404 }, message: 'Docker image not found'  }, status: :not_found
+    end
   end
 
   def destroy 
-    # TODO: docker image rm
+    begin
+      Docker::Image.remove(params[:id])
+      render json: { status: { code: 200 }, message: 'Image deleted' }
+    rescue Docker::Error::NotFoundError
+      render json: { status: { code: 404 }, message: 'Docker image not found'  }, status: :not_found
+    rescue => error
+      render json: { status: { code: 503 }, message: error.message  }, status: 503
+    end
   end
   
 

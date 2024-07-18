@@ -1,0 +1,14 @@
+{
+    "id": "https://json-schema.org/image",
+    "$schema": "https://json-schema.org/draft-06/schema#",
+    "description": "Docker image details",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "info": {
+        "type": "object"
+      }
+    }
+  }
