@@ -1,0 +1,20 @@
+{
+    "id": "https://json-schema.org/containers",
+    "$schema": "https://json-schema.org/draft-06/schema#",
+    "description": "Docker images list",
+    "type": "array",
+    "properties": {
+      "id": {
+        "type": "string"
+      },      
+      "image": {
+        "type": "string"
+      },
+      "names": {
+        "type": "array"
+      },
+      "status": {
+        "type": "string"
+      }
+    }
+  }

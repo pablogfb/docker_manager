@@ -1,8 +1,19 @@
 class V1::ContainersController < ApplicationController
-  respond_to :json
 
   def index
-    #TODO: docker container ls
+    begin
+      containers = Docker::Container.all(:all => true)
+      containers.map! { |container| { 
+                                      id: container.id, 
+                                      image: container.info["ImageID"],
+                                      names: container.info["Names"], 
+                                      status: container.info["Status"]
+                                    } 
+                      }
+      render json: { status: { code: 200 }, data: containers }
+    rescue => error
+      render json: { status: { code: 503 }, message: error.message  }, status: 503
+    end
   end
 
   def create
