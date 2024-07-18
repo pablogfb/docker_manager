@@ -31,7 +31,7 @@ RSpec.describe "V1::Containers", type: :request do
       data = JSON.parse(response.body)["data"]
       expect(data).to match_json_schema("container")
     end
-    
+
     it "returns 404 if image does not exists" do
       post "/v1/containers", params: {image: 'wrongimage'}
       expect(response.status).to eq(404)

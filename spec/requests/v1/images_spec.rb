@@ -91,8 +91,28 @@ RSpec.describe "V1::Images", type: :request do
       expect(response.body).to start_with('{"status":{"code":503},"message":"{\"message\":\"')
     end
 
+  end
 
+  describe "POST /:id/push" do 
+    
+    it 'returns 403 if authorization fails' do
+      image = Docker::Image.build("FROM alpine\nRUN echo 'Hello, World!' > /test.txt ")
+      post "/v1/images/#{image.id}/push", params: {username: 'wrongusername', password: 'wrongpassword'}
+      expect(response.status).to eq(403)
+      image.remove(:force => true)
+    end
 
+    it 'returns 200 if image is pushed' do 
+      image = Docker::Image.build("FROM alpine\nRUN echo 'Hello, World!' > /test.txt ")
+      post "/v1/images/#{image.id}/push", params: {
+                                                    username: Rails.application.credentials.registry_username, 
+                                                    password: Rails.application.credentials.registry_password,
+                                                    serveraddress: 'localhost:5000',
+                                                    repo: 'test',
+                                                    tag: 'latest'
+                                                  }
+      expect(response.status).to eq(200)
+    end
 
   end
 
