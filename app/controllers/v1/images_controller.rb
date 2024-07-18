@@ -22,6 +22,15 @@ class V1::ImagesController < ApplicationController
     end
   end
 
+  def from_file
+    begin
+      file_data =  params[:dockerfile]
+      image = Docker::Image.build(file_data.read)
+      render json: { status: { code: 200 }, data: {image: image.id} }
+    rescue => error
+      render json: { status: { code: 503 }, message: error.message  }, status: 503
+    end
+  end
 
   def show
     begin
