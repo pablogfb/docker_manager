@@ -18,7 +18,14 @@ class V1::ContainersController < ApplicationController
   
 
   def create
-    #TODO: docker container run
+    begin
+      container = Docker::Container.create('Image': params[:image])
+      render json: { status: { code: 200 }, data: {container: container, logs: container.logs(stdout: true) } }
+    rescue Docker::Error::NotFoundError
+      render json: { status: { code: 404 }, message: 'Docker image not found' }, status: :not_found
+    rescue => error
+      render json: { status: { code: 503 }, message: error.message  }, status: 503
+    end
   end
 
 

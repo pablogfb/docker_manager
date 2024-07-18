@@ -14,6 +14,30 @@ RSpec.describe "V1::Containers", type: :request do
     end
   end
 
+  describe "POST /" do 
+    it "returns success and container data if image id exists" do 
+      image = Docker::Image.build("FROM alpine\nRUN echo 'Hello, World!' > /test.txt ")
+      post "/v1/containers", params: {image: image.id}
+      expect(response.status).to eq(200)
+      data = JSON.parse(response.body)["data"]
+      expect(data).to match_json_schema("container")
+    end
+
+    it "returns success and container data if image name exists" do 
+      image = Docker::Image.build("FROM alpine\nRUN echo 'Hello, World!' > /test.txt ")
+      image.tag('repo' => 'test', 'tag' => 'latest', force: true)
+      post "/v1/containers", params: {image: "test:latest"}
+      expect(response.status).to eq(200)
+      data = JSON.parse(response.body)["data"]
+      expect(data).to match_json_schema("container")
+    end
+    
+    it "returns 404 if image does not exists" do
+      post "/v1/containers", params: {image: 'wrongimage'}
+      expect(response.status).to eq(404)
+    end
+  end
+
   describe "GET /:id" do
 
     it "returns 404 if the container does not exist" do 
