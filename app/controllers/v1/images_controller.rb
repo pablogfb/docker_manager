@@ -1,8 +1,9 @@
 class V1::ImagesController < ApplicationController
-  respond_to :json
 
   def index
-    # TODO: docker image ls
+    images = Docker::Image.all
+    images.map! { |image| {id: image.id, tag: image.tag} }
+    render json: { status: { code: 200 }, data: images }
   end
 
   def create
