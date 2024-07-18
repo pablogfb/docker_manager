@@ -1,0 +1,19 @@
+{
+    "id": "https://json-schema.org/container",
+    "$schema": "https://json-schema.org/draft-06/schema#",
+    "description": "Docker container details",
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "object"
+      },
+      "data": {
+        "container": {
+          "type": "object"
+        },
+        "logs": {
+          "type": "string"
+        }
+      }
+    }
+  }
