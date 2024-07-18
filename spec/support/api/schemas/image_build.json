@@ -1,0 +1,11 @@
+{
+    "id": "https://json-schema.org/image_build",
+    "$schema": "https://json-schema.org/draft-06/schema#",
+    "description": "Docker images list",
+    "type": "object",
+    "properties": {
+      "image": {
+        "type": "string"
+      }
+    }
+  }

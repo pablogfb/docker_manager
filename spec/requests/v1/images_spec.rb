@@ -69,5 +69,32 @@ RSpec.describe "V1::Images", type: :request do
     end
   end
 
+  describe "POST /" do 
+
+    it "should build the image and return the id" do 
+
+      post "/v1/images", params: "FROM alpine\nRUN echo 'Hello, World!' > /test.txt "
+      
+      expect(response.status).to eq(200)
+      data = JSON.parse(response.body)["data"]
+      expect(data).to match_json_schema("image_build")
+
+      Docker::Image.remove(data["image"])
+
+    end
+
+    it "it should describe the error in case of failure" do 
+       
+      post "/v1/images", params: "Not valid dockerfile"
+
+      expect(response.status).to eq(503)
+      expect(response.body).to start_with('{"status":{"code":503},"message":"{\"message\":\"')
+    end
+
+
+
+
+  end
+
 
 end
