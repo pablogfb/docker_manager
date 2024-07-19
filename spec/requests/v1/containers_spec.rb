@@ -98,4 +98,34 @@ RSpec.describe "V1::Containers", type: :request do
     end
     
   end
+
+  describe "POST :id/action" do 
+    it 'should start the container' do 
+
+      image  = Docker::Image.create('fromImage' => 'nginx:1.27.0-alpine-slim')
+      container = Docker::Container.create("Image": image.id)
+      expect(container.json["State"]["Running"]).to eq(false)
+
+      post "/v1/containers/#{container.id}/action", params: {command: "start"}
+      expect(container.json["State"]["Running"]).to eq(true)
+      container.stop
+      container.remove(:force => true)
+      image.remove(:force => true)
+    end
+
+    it 'should stop the container' do 
+
+      image  = Docker::Image.create('fromImage' => 'nginx:1.27.0-alpine-slim')
+      container = Docker::Container.create("Image": image.id)
+      container.start     
+
+      post "/v1/containers/#{container.id}/action", params: {command: "stop"}
+      expect(container.json["State"]["Running"]).to eq(false)
+      container.stop
+      container.remove(:force => true)
+      image.remove(:force => true)
+    end
+    
+  end
+
 end

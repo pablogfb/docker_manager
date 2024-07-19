@@ -57,7 +57,6 @@ class V1::ContainersController < ApplicationController
   def action
     begin
       container = Docker::Container.get(params[:id])
-      puts params
       container.start if params[:command] == 'start'
       container.stop if params[:command] == 'stop'
 
