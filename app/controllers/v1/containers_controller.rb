@@ -54,5 +54,20 @@ class V1::ContainersController < ApplicationController
     end
   end
 
+  def action
+    begin
+      container = Docker::Container.get(params[:id])
+      puts params
+      container.start if params[:command] == 'start'
+      container.stop if params[:command] == 'stop'
+
+      render json: { status: { code: 200 }, data: {container: container } }
+    rescue Docker::Error::NotFoundError
+      render json: { status: { code: 404 }, message: 'Docker container not found' }, status: :not_found
+    rescue => error
+      render json: { status: { code: 503 }, message: error.message  }, status: 503
+    end
+  end
+
 
 end

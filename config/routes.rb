@@ -7,7 +7,9 @@ Rails.application.routes.draw do
       post 'from_file', on: :collection
     end
     
-    resources :containers, only: [:index, :create, :show, :destroy]
+    resources :containers, only: [:index, :create, :show, :destroy] do 
+      post 'action', on: :member
+    end
   end
 
 end
