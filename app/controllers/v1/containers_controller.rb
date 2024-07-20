@@ -15,13 +15,13 @@ class V1::ContainersController < V1::ApiController
 
   def create
     container = Docker::Container.create('Image': params[:image])
-    render json: { status: { code: 200 }, data: {container: container, logs: container.logs(stdout: true) } }
+    render json: { status: { code: 200 }, data: {container: container} }
   end
 
 
   def show
     container = Docker::Container.get(params[:id])
-    render json: { status: { code: 200 }, data: {container: container, logs: container.logs(stdout: true) } }
+    render json: { status: { code: 200 }, data: {container: container} }
   end
 
 
