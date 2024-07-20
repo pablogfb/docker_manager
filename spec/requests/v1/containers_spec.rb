@@ -45,7 +45,7 @@ RSpec.describe "V1::Containers", type: :request do
       get "/v1/containers/nonexistingcontainer"
 
       expect(response.status).to eq(404)
-      expect(response.body).to eq('{"status":{"code":404},"message":"Docker container not found"}')
+      expect(response.body).to eq('{"status":{"code":404},"message":"Docker entity not found"}')
     end
 
     it "returns the container info if the container exists" do 
@@ -70,7 +70,7 @@ RSpec.describe "V1::Containers", type: :request do
       delete "/v1/containers/nonexistingcontainer"
 
       expect(response.status).to eq(404)
-      expect(response.body).to eq('{"status":{"code":404},"message":"Docker Container not found"}')
+      expect(response.body).to eq('{"status":{"code":404},"message":"Docker entity not found"}')
     end
 
 

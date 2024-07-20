@@ -19,7 +19,7 @@ RSpec.describe "V1::Images", type: :request do
       get "/v1/images/nonexistingimage"
 
       expect(response.status).to eq(404)
-      expect(response.body).to eq('{"status":{"code":404},"message":"Docker image not found"}')
+      expect(response.body).to eq('{"status":{"code":404},"message":"Docker entity not found"}')
     end
 
     it "returns the image info if the image exists" do 
@@ -43,7 +43,7 @@ RSpec.describe "V1::Images", type: :request do
       delete "/v1/images/nonexistingimage"
 
       expect(response.status).to eq(404)
-      expect(response.body).to eq('{"status":{"code":404},"message":"Docker image not found"}')
+      expect(response.body).to eq('{"status":{"code":404},"message":"Docker entity not found"}')
     end
 
     it "returns success and delete the image if the image exists" do 
@@ -61,8 +61,8 @@ RSpec.describe "V1::Images", type: :request do
       container = Docker::Container.create( "Image": image.id)
 
       delete "/v1/images/#{image.id}"
-      expect(response.status).to eq(503)
-      expect(response.body).to start_with('{"status":{"code":503},"message":"{\"message\":\"conflict: unable to delete')
+      expect(response.status).to eq(422)
+      expect(response.body).to start_with('{"status":{"code":422},"message":"{\"message\":\"conflict: unable to delete')
       container.remove(:force => true)
       image.remove(:force => true)
 
