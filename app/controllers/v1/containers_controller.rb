@@ -30,8 +30,7 @@ class V1::ContainersController < V1::ApiController
     # Need to force logs encoding
     render json: { 
       status: { code: 200 }, 
-      data: {logs: container.logs(stdout: true).force_encoding("ISO-8859-1")
-      } }
+      data: {logs: container.logs(stdout: true).force_encoding("ISO-8859-1")}}
   end
 
 
