@@ -37,6 +37,13 @@ class V1::ImagesController < V1::ApiController
     image.push
     render json: { status: { code: 200 }, message: 'Image pushed to registry' }
   end
+
+  def tag
+    image = Docker::Image.get(params[:id])
+    image.tag(repo: params[:repo])
+    image.push
+    render json: { status: { code: 200 }, message: 'Image tagged' }
+  end
   
   private
 

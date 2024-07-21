@@ -116,5 +116,16 @@ RSpec.describe "V1::Images", type: :request do
 
   end
 
+  describe "POST /:id/tag" do 
+    it 'returns 200 if image is tagged' do 
+      image = Docker::Image.build("FROM alpine\nRUN echo 'Hello, World!' > /test.txt ")
+      post "/v1/images/#{image.id}/tag", params: {
+                                                    repo: 'test',
+                                                    tag: 'latest'
+                                                  }
+      expect(response.status).to eq(200)
+    end
+  end
+
 
 end
