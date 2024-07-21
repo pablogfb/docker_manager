@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     end
     
     resources :containers, only: [:index, :create, :show, :destroy] do 
-      post 'action', on: :member
+      member do
+        post  'action'
+        get   'logs'
+      end
     end
   end
 
