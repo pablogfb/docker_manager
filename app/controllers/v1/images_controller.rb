@@ -1,6 +1,6 @@
 class V1::ImagesController < V1::ApiController
   def index
-    images = ImagesManager::Fetcher.call
+    images = ImagesManager::FetchAll.call
     render json: { status: { code: 200 }, data: images }
   end
 

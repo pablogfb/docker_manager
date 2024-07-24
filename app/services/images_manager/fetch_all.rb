@@ -1,5 +1,5 @@
 module ImagesManager
-  class Fetcher < ApplicationService
+  class FetchAll < ApplicationService
     
     def initialize
     end
